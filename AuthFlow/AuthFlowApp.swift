@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct AuthFlowApp: App {
+    
+    @StateObject var auth = Authentication()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if auth.isAuthenticated{
+                ContentView()
+                    .environmentObject(auth)
+            }
+            else{
+                AuthenticationView()
+                    .environmentObject(auth)
+            }
         }
     }
 }
