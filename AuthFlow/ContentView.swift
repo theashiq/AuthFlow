@@ -29,7 +29,7 @@ struct ContentView: View {
             Spacer()
             
             Button("Log Out"){
-                auth.updateValidation(success: false)
+                auth.updateValidation(user: nil)
             }
             .buttonStyle(.borderedProminent)
             .padding()

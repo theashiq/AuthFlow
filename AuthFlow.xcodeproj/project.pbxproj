@@ -11,10 +11,9 @@
 		1A6990BF2ACB532100B483B0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6990BE2ACB532100B483B0 /* ContentView.swift */; };
 		1A6990C12ACB532300B483B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A6990C02ACB532300B483B0 /* Assets.xcassets */; };
 		1A6990C42ACB532300B483B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A6990C32ACB532300B483B0 /* Preview Assets.xcassets */; };
+		1A997F242ACD5D9200B9855E /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A997F232ACD5D9200B9855E /* AuthenticationViewModel.swift */; };
 		1ACD18682ACC3F1900587F35 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD18672ACC3F1900587F35 /* AuthService.swift */; };
-		1ACD186C2ACC4ED000587F35 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD186B2ACC4ED000587F35 /* LoginView.swift */; };
 		1ACD186E2ACC528200587F35 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD186D2ACC528200587F35 /* AuthenticationView.swift */; };
-		1ACD18702ACC81CE00587F35 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD186F2ACC81CE00587F35 /* LoginViewModel.swift */; };
 		1ACD18722ACC9FF000587F35 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACD18712ACC9FF000587F35 /* Authentication.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,10 +23,9 @@
 		1A6990BE2ACB532100B483B0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1A6990C02ACB532300B483B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A6990C32ACB532300B483B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1A997F232ACD5D9200B9855E /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		1ACD18672ACC3F1900587F35 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		1ACD186B2ACC4ED000587F35 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		1ACD186D2ACC528200587F35 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
-		1ACD186F2ACC81CE00587F35 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1ACD18712ACC9FF000587F35 /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,13 +59,12 @@
 		1A6990BB2ACB532100B483B0 /* AuthFlow */ = {
 			isa = PBXGroup;
 			children = (
+				1ACD18672ACC3F1900587F35 /* AuthService.swift */,
 				1A6990BC2ACB532100B483B0 /* AuthFlowApp.swift */,
 				1A6990BE2ACB532100B483B0 /* ContentView.swift */,
-				1ACD18672ACC3F1900587F35 /* AuthService.swift */,
-				1ACD186B2ACC4ED000587F35 /* LoginView.swift */,
-				1ACD186D2ACC528200587F35 /* AuthenticationView.swift */,
-				1ACD186F2ACC81CE00587F35 /* LoginViewModel.swift */,
 				1ACD18712ACC9FF000587F35 /* Authentication.swift */,
+				1ACD186D2ACC528200587F35 /* AuthenticationView.swift */,
+				1A997F232ACD5D9200B9855E /* AuthenticationViewModel.swift */,
 				1A6990C02ACB532300B483B0 /* Assets.xcassets */,
 				1A6990C22ACB532300B483B0 /* Preview Content */,
 			);
@@ -155,8 +152,7 @@
 				1ACD18722ACC9FF000587F35 /* Authentication.swift in Sources */,
 				1A6990BF2ACB532100B483B0 /* ContentView.swift in Sources */,
 				1ACD18682ACC3F1900587F35 /* AuthService.swift in Sources */,
-				1ACD18702ACC81CE00587F35 /* LoginViewModel.swift in Sources */,
-				1ACD186C2ACC4ED000587F35 /* LoginView.swift in Sources */,
+				1A997F242ACD5D9200B9855E /* AuthenticationViewModel.swift in Sources */,
 				1A6990BD2ACB532100B483B0 /* AuthFlowApp.swift in Sources */,
 				1ACD186E2ACC528200587F35 /* AuthenticationView.swift in Sources */,
 			);

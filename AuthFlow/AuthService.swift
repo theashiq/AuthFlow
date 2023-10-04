@@ -10,16 +10,22 @@ import Foundation
 
 class AuthService{
     
-    typealias LoginCompletion = (Result<Bool, AuthApiError>) -> Void
+    typealias Completion = (Result<User, AuthApiError>) -> Void
     
     static var shared = AuthService()
     
     private init(){}
     
-    func login(credentials: AuthLoginCredentials, completion: @escaping LoginCompletion){
+    func login(credentials: AuthLoginCredentials, completion: @escaping Completion){
         DispatchQueue.main.asyncAfter(deadline: .now() + 1){
             if credentials.password == "pass"{
-                completion(.success(true))
+                completion(.success(User(
+                    email: credentials.email,
+                    password: credentials.password,
+                    firstName: "",
+                    lastName: "",
+                    dateOfBirth: .now)
+                ))
             }
             else{
                 completion(.failure(.invalidLoginCredential))
@@ -27,6 +33,22 @@ class AuthService{
         }
     }
     
+    func register(credentials: AuthRegistrationCredentials, completion: @escaping Completion){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+            if credentials.password == "pass"{
+                completion(.success(User(
+                    email: credentials.email,
+                    password: credentials.password,
+                    firstName: credentials.firstName,
+                    lastName: credentials.lastName,
+                    dateOfBirth: credentials.dateOfBirth)
+                ))
+            }
+            else{
+                completion(.failure(.registrationError))
+            }
+        }
+    }
 }
 
 struct AuthLoginCredentials{
@@ -38,13 +60,35 @@ struct AuthLoginCredentials{
     }
 }
 
+struct AuthRegistrationCredentials{
+    var email: String = ""
+    var password: String = ""
+    var firstName: String = ""
+    var lastName: String = ""
+    var dateOfBirth: Date? = nil
+    
+    static var empty: Self{
+        AuthRegistrationCredentials()
+    }
+}
+
+struct User{
+    var email: String
+    var password: String // should not stay here
+    var firstName: String
+    var lastName: String
+    var dateOfBirth: Date? = nil
+}
+
 
 enum AuthApiError: Error, LocalizedError{
     case invalidLoginCredential
+    case registrationError
     
     var errorDescription: String?{
         switch self{
-        case .invalidLoginCredential: return NSLocalizedString("Either your email or password is incorrect. Please try again.", comment: "")
+        case .invalidLoginCredential: return NSLocalizedString("Log in failed. Either your email or password is incorrect", comment: "")
+        case .registrationError: return NSLocalizedString("Registration failed. Please try again after a while.", comment: "")
         }
     }
 }

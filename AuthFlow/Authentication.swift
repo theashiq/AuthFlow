@@ -8,11 +8,17 @@
 import SwiftUI
 
 class Authentication: ObservableObject{
+    
+    @Published var user: User? = nil{
+        didSet{
+            isAuthenticated = user != nil
+        }
+    }
     @Published var isAuthenticated: Bool = false
         
-    func updateValidation(success: Bool) {
+    func updateValidation(user: User?) {
         withAnimation {
-            isAuthenticated = success
+            self.user = user
         }
     }
 }

@@ -25,3 +25,24 @@ struct AuthFlowApp: App {
         }
     }
 }
+
+//struct TestView: View {
+//    
+//    @EnvironmentObject var auth: Authentication
+//    var body: some View{
+//        if auth.isAuthenticated{
+//            ContentView()
+//                .environmentObject(Authentication())
+//        }
+//        else{
+//            AuthenticationView()
+//                .environmentObject(Authentication())
+//        }
+//    }
+//}
+//struct TestView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TestView()
+//            .environmentObject(Authentication())
+//    }
+//}
