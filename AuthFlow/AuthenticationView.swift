@@ -13,15 +13,15 @@ struct AuthenticationView: View {
     
     @StateObject var authVM = AuthenticationViewModel()
     
-    @State var isLoginViewSelected = true
+    @State var isPresentingError = false
     
     var body: some View {
         ZStack{
             VStack{
-                Text(isLoginViewSelected ? "Log in" : "Register").font(.title)
+                Text(authVM.isLoginViewSelected ? "Log in" : "Register").font(.title)
                 
-                if isLoginViewSelected{
-                    loginForm
+                if authVM.isLoginViewSelected{
+                    loginFields
                 }
                 else{
                     registerForm
@@ -29,62 +29,117 @@ struct AuthenticationView: View {
                 
                 VStack{
                     loginRegisterButton
+                        .disabled(!authVM.enableButton)
                     switchButton
                 }
                 .padding(.horizontal)
             }
-            .disabled(authVM.showProgress)
-            if authVM.showProgress{
+            .disabled(authVM.isLoggingIn || authVM.isRegistering)
+            
+            if authVM.isLoggingIn || authVM.isRegistering{
                 Color.gray.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
                 ProgressView()
             }
         }
+        .onChange(of: authVM.error){ error in
+            if error != nil{
+                isPresentingError = true
+            }
+        }
+        .alert("An Error Occurred", isPresented: $isPresentingError, actions: {
+            Button("Ok", role: .cancel) {
+                authVM.error = nil
+            }
+        }, message: {
+            Text(authVM.error?.localizedDescription ?? "An unexpected error has occurred")
+        })
+        .alert("An Error Occurred", isPresented: $isPresentingError, actions: {
+            Button("Ok", role: .cancel) {
+                authVM.error = nil
+            }
+        }, message: {
+            Text(authVM.error?.localizedDescription ?? "An unexpected error has occurred")
+        })
+        
     }
     
-    private var loginForm: some View{
+    private var loginFields: some View{
         Form{
-            Section("Email"){
-                TextField("Email", text: $authVM.loginCredentials.email)
-                    .keyboardType(.emailAddress)
-            }
-            Section("Password"){
-                SecureField("Password", text: $authVM.loginCredentials.password)
-            }
+            CustomInputField(
+                "Email",
+                text: $authVM.email,
+                imageName: "envelope",
+                isPristine: $authVM.isEmailPristine,
+                errorMessage: authVM.emailErrorMessage
+            )
+            .keyboardType(.emailAddress)
+            
+            CustomInputField(
+                "Password",
+                text: $authVM.password,
+                imageName: "lock",
+                isSecure: true,
+                isPristine: $authVM.isPasswordPristine,
+                errorMessage: authVM.passwordErrorMessage
+            )
         }
     }
     
     private var registerForm: some View{
         Form{
-            Section("Email"){
-                TextField("Email", text: $authVM.registerCredentials.email)
-                    .keyboardType(.emailAddress)
-            }
-            Section("Password"){
-                SecureField("Password", text: $authVM.registerCredentials.password)
-            }
-            Section("Name"){
-                HStack{
-                    TextField("First Name", text: $authVM.registerCredentials.firstName)
-                    Divider()
-                    TextField("Last Name", text: $authVM.registerCredentials.lastName)
-                }
-            }
+            CustomInputField(
+                "Name",
+                text: $authVM.name,
+                imageName: "person.crop.circle",
+                isPristine: $authVM.isNamePristine,
+                errorMessage: authVM.nameErrorMessage
+            )
+            
+            CustomInputField(
+                "Email",
+                text: $authVM.email,
+                imageName: "envelope",
+                isPristine: $authVM.isEmailPristine,
+                errorMessage: authVM.emailErrorMessage
+            )
+            .keyboardType(.emailAddress)
+            
+            CustomInputField(
+                "Password",
+                text: $authVM.password,
+                imageName: "lock",
+                isSecure: true,
+                isPristine: $authVM.isPasswordPristine,
+                errorMessage: authVM.passwordErrorMessage
+            )
+            
+            CustomInputField(
+                "Repeat Password",
+                text: $authVM.passwordRepeat,
+                imageName: "lock",
+                isSecure: true,
+                isPristine: $authVM.isPasswordRepeatPristine,
+                errorMessage: authVM.passwordRepeatErrorMessage
+            )
+        
         }
     }
     
     private var loginRegisterButton: some View{
         HStack{
             Button(action: {
-                if isLoginViewSelected{
-                    authVM.login(completion: auth.updateValidation)
+                if authVM.isLoginViewSelected{
+                    authVM.login(
+                        completion: auth.updateValidation
+                    )
                 }
                 else{
                     authVM.register(completion: auth.updateValidation)
                 }
             }){
                 HStack{
-                    Text(isLoginViewSelected ? "Log in" : "Register")
+                    Text(authVM.isLoginViewSelected ? "Log in" : "Register")
                         .padding(.trailing)
                     
                 }
@@ -104,10 +159,10 @@ struct AuthenticationView: View {
     private var switchButton: some View{
         VStack{
             Button(
-                isLoginViewSelected ? "Don't have an account? Create one" : "Already a member? Log in"
+                authVM.isLoginViewSelected ? "Don't have an account? Create one" : "Already a member? Log in"
             ){
                 withAnimation{
-                    isLoginViewSelected.toggle()
+                    authVM.isLoginViewSelected.toggle()
                 }
             }
             .buttonStyle(.borderless)
@@ -122,3 +177,55 @@ struct AuthenticationView_Previews: PreviewProvider {
     }
 }
 
+struct CustomInputField: View{
+    var title: String
+    @Binding var text: String
+    var imageName: String
+    var isSecure = false
+    @Binding var isPristine: Bool
+    var errorMessage: String
+    
+    init(_ title: String, text: Binding<String>, imageName: String, isSecure: Bool = false, isPristine: Binding<Bool> = .constant(false), errorMessage: String = "") {
+        self.title = title
+        self._text = text
+        self.imageName = imageName
+        self.isSecure = isSecure
+        self._isPristine = isPristine
+        self.errorMessage = errorMessage
+    }
+    
+    var body: some View{
+        HStack{
+            HStack{
+                Image(systemName: imageName)
+                    .frame(width: 20)
+                    
+                Group{
+                    if isSecure{
+                        SecureField(title, text: $text)
+                    }
+                    else{
+                        TextField(title, text: $text)
+                    }
+                }
+                .textInputAutocapitalization(.never)
+                .onChange(of: text){ _ in
+                    isPristine = false
+                }
+                .overlay{
+                    
+                    if !errorMessage.isEmpty {
+                        HStack{
+                            Spacer()
+                            Text(errorMessage)
+                                .foregroundColor(.red)
+                                .font(.caption)
+                        }
+                        .offset(y: 25)
+                    }
+                }
+            }
+        }
+        .frame(height: 55)
+    }
+}

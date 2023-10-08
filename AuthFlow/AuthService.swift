@@ -22,8 +22,7 @@ class AuthService{
                 completion(.success(User(
                     email: credentials.email,
                     password: credentials.password,
-                    firstName: "",
-                    lastName: "",
+                    name: "",
                     dateOfBirth: .now)
                 ))
             }
@@ -39,8 +38,7 @@ class AuthService{
                 completion(.success(User(
                     email: credentials.email,
                     password: credentials.password,
-                    firstName: credentials.firstName,
-                    lastName: credentials.lastName,
+                    name: credentials.name,
                     dateOfBirth: credentials.dateOfBirth)
                 ))
             }
@@ -63,8 +61,7 @@ struct AuthLoginCredentials{
 struct AuthRegistrationCredentials{
     var email: String = ""
     var password: String = ""
-    var firstName: String = ""
-    var lastName: String = ""
+    var name: String = ""
     var dateOfBirth: Date? = nil
     
     static var empty: Self{
@@ -72,11 +69,11 @@ struct AuthRegistrationCredentials{
     }
 }
 
-struct User{
+struct User: Identifiable{
+    var id = UUID().uuidString
     var email: String
     var password: String // should not stay here
-    var firstName: String
-    var lastName: String
+    var name: String
     var dateOfBirth: Date? = nil
 }
 

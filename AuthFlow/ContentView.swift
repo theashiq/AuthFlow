@@ -26,6 +26,15 @@ struct ContentView: View {
             Text("Yeyy! You are logged in")
                 .padding(.top)
             
+            
+            VStack{
+                Text(auth.user?.name ?? "")
+                Text(auth.user?.email ?? "")
+                Text(auth.user?.password ?? "")
+            }
+                
+            
+            
             Spacer()
             
             Button("Log Out"){
